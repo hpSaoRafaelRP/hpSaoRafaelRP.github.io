@@ -63,7 +63,7 @@ function App() {
       <header style={{ display: 'flex', justifyContent: "space-between", alignItems: "center"}}>
         <h1 style={{ fontSize: '24px' }} >Calculadora de Preço</h1>
         <button onClick={resetCounters} style={{ padding: '6px 16px', fontSize: '16px' }}>
-          Reset
+          Resetar
         </button>
       </header>
       <div>
