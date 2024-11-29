@@ -16,8 +16,11 @@ function App() {
   const totalsReducer = (state: number[], action: Action): number[] => {
     switch (action.type) {
       case 'SET_TOTAL': {
-        const { index, value } = action.payload!;
-        return state.map((item, i) => (i === index ? value : item));
+        if (!action.payload) {
+          throw new Error('Action payload is required for SET_TOTAL');
+        }
+        const { index, value } = action.payload;
+        return state.map((item, i) => (i === index ? value : item)) as number[];
       }
       case 'RESET_TOTALS': {
         return initialState;
