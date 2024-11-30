@@ -40,7 +40,8 @@ const Button = styled.button`
   background-color: #007bff;
   color: white;
   border: none;
-  padding: 5px 10px;
+  padding: 10px 15px;
+  margin-right: 5px;
   font-size: 1rem;
   cursor: pointer;
   border-radius: 3px;
@@ -50,7 +51,7 @@ const Button = styled.button`
   }
 
   &:disabled {
-    background-color: #ddd;
+    background-color: #858585;
     cursor: not-allowed;
   }
 `;
@@ -81,6 +82,9 @@ const InputCounter = forwardRef<InputCounterRef, InputCounterProps>(
         const newValue = count - 1;
         setCount(newValue);
       }
+    };
+    const setToMax = () => {
+      setCount(maxCount);
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -117,6 +121,9 @@ const InputCounter = forwardRef<InputCounterRef, InputCounterProps>(
           />
           <Button onClick={increment} disabled={count === maxCount}>
             +
+          </Button>
+          <Button onClick={setToMax} disabled={count === maxCount}>
+            MAX
           </Button>
         </InputWrapper>
       </Container>

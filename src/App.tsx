@@ -133,14 +133,14 @@ function App() {
 
         <InputCounter
           label="Tratamento Norte"
-          price={1000}
+          price={800}
           handleChange={(value: number) => setTreatmentN(value)}
           maxCount={100}
           ref={refs[7]}
         />
         <InputCounter
           label="Tratamento Sul"
-          price={1500}
+          price={1200}
           handleChange={(value: number) => setTreatmentS(value)}
           maxCount={100}
           ref={refs[8]}
