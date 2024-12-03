@@ -15,39 +15,55 @@ export interface InputCounterRef {
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-  margin: 10px 0;
+  align-items: stretch;
+  margin: 0;
+  background-color: #f8ebe3;
+`;
+
+const Header = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  color: #59341e;
+  background-color: #e8ba9c;
+  gap: 4px;
+  padding: 6px 0;
 `;
 
 const Label = styled.label`
-  font-size: 1rem;
+  font-size: 0.8rem;
   font-weight: bold;
-  margin-bottom: 5px;
 `;
 
 const PriceText = styled.span`
-  font-size: 0.9rem;
-  color: #555;
-  margin-bottom: 10px;
+  font-size: 0.8rem;
 `;
 
 const InputWrapper = styled.div`
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 3px;
 `;
 
 const Button = styled.button`
-  background-color: #007bff;
-  color: white;
+  background-color: #69422a;
+  color: #f0e5e1;
   border: none;
-  padding: 10px 15px;
-  margin-right: 5px;
-  font-size: 1rem;
+  width: 30px;
+  height: 30px;
+  font-weight: bold;
+  
+  margin-right: 0;
+  font-size: 1.2rem;
   cursor: pointer;
   border-radius: 3px;
 
   &:hover {
-    background-color: #0056b3;
+    background-color: #9f7b64;
   }
 
   &:disabled {
@@ -56,14 +72,34 @@ const Button = styled.button`
   }
 `;
 
+const MaxButton = styled.button`
+  background-color: transparent;
+  color: #69422a;
+  border: none;
+  font-weight: bold;
+  
+  margin-right: 0;
+  font-size: 1.2rem;
+  cursor: pointer;
+  border-radius: 3px;
+
+  &:hover {
+    color: #9f7b64;
+  }
+
+`;
+
 const Input = styled.input`
-  width: 50px;
+  width: auto;
   text-align: center;
   font-size: 1rem;
-  margin: 0 10px;
+  margin: 0;
   border: 1px solid #ccc;
-  border-radius: 3px;
   padding: 5px;
+  flex-grow: 1;
+  appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: textfield;
 `;
 
 const InputCounter = forwardRef<InputCounterRef, InputCounterProps>(
@@ -106,8 +142,13 @@ const InputCounter = forwardRef<InputCounterRef, InputCounterProps>(
 
     return (
       <Container>
-        <Label>{label}</Label>
-        <PriceText>Preço: R$ {price.toFixed(2)}</PriceText>
+        <Header>
+          <Label>{label}</Label>
+          <PriceText>Preço: {price}</PriceText>
+        </Header>
+        <MaxButton onClick={setToMax} disabled={count === maxCount}>
+          MAX
+        </MaxButton>
         <InputWrapper>
           <Button onClick={decrement} disabled={count === 0}>
             -
@@ -121,9 +162,6 @@ const InputCounter = forwardRef<InputCounterRef, InputCounterProps>(
           />
           <Button onClick={increment} disabled={count === maxCount}>
             +
-          </Button>
-          <Button onClick={setToMax} disabled={count === maxCount}>
-            MAX
           </Button>
         </InputWrapper>
       </Container>

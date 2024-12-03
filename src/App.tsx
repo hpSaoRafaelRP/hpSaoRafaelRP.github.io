@@ -1,6 +1,7 @@
 import { useReducer, useRef, useState } from 'react';
 import './App.css';
 import InputCounter, { InputCounterRef } from './components/InputCouter';
+import styled from 'styled-components';
 
 interface Action {
   type: 'SET_TOTAL' | 'RESET_TOTALS';
@@ -9,6 +10,26 @@ interface Action {
     value?: number;
   };
 }
+export const GridWrapper = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 6px;
+  > * {
+    flex-grow: 1;
+    max-width: calc(33%);
+    @media screen and (min-width: 762px) {
+      max-width: unset;
+    }
+  }
+`;
+
+const CardContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0;
+`;
 
 function App() {
   const initialState: number[] = Array(7).fill(0);
@@ -65,11 +86,8 @@ function App() {
     <>
       <header style={{ display: 'flex', justifyContent: "space-between", alignItems: "center"}}>
         <h1 style={{ fontSize: '24px' }} >Calculadora de Preço</h1>
-        <button onClick={resetCounters} style={{ padding: '6px 16px', fontSize: '16px' }}>
-          Resetar
-        </button>
       </header>
-      <div>
+      <GridWrapper>
         <InputCounter
           label="Adrenalina"
           price={7500 * (withDiscount ? 0.8 : 1)}
@@ -119,35 +137,39 @@ function App() {
           maxCount={3}
           ref={refs[6]}
         />
-        <div style={{ marginTop: '30px', marginBottom: '30px' }}>
-          <label style={{ fontSize: '24px', display: 'flex' }}>
+
+        <CardContainer>
+          <InputCounter
+            label="Tratamento Norte"
+            price={800}
+            handleChange={(value: number) => setTreatmentN(value)}
+            maxCount={100}
+            ref={refs[7]}
+          />
+          <InputCounter
+            label="Tratamento Sul"
+            price={1200}
+            handleChange={(value: number) => setTreatmentS(value)}
+            maxCount={100}
+            ref={refs[8]}
+          />
+        </CardContainer>
+        <CardContainer>
+          <button onClick={resetCounters} style={{ padding: '6px 16px', fontSize: '16px' }}>
+            Resetar
+          </button>
+          <label style={{ fontSize: '14px', display: 'flex', alignItems: 'center' }}>
             <input
               type="checkbox"
               checked={withDiscount}
               onChange={(e) => setWithDiscount(e.target.checked)}
-              style={{ marginRight: '10px' }}
+              style={{ marginRight: '3px' }}
             />
-            Com parceria
+            CONVÊNIO
           </label>
-        </div>
-
-        <InputCounter
-          label="Tratamento Norte"
-          price={800}
-          handleChange={(value: number) => setTreatmentN(value)}
-          maxCount={100}
-          ref={refs[7]}
-        />
-        <InputCounter
-          label="Tratamento Sul"
-          price={1200}
-          handleChange={(value: number) => setTreatmentS(value)}
-          maxCount={100}
-          ref={refs[8]}
-        />
-
-        <h3 style={{ fontSize: '24px' }} >Total: R$ {calculateGrandTotal().toFixed(2)}</h3>
-      </div>
+          <h3 style={{ fontSize: '18px' }} >Total: {calculateGrandTotal()}</h3>
+        </CardContainer>
+      </GridWrapper>
     </>
   );
 }
