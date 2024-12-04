@@ -3,8 +3,9 @@ import styled from 'styled-components';
 
 interface InputCounterProps {
   label: string;
+  image?: string;
   price: number;
-  maxCount: number;
+  maxCount?: number;
   handleChange: (value: number) => void;
 }
 
@@ -42,13 +43,29 @@ const PriceText = styled.span`
 `;
 
 const InputWrapper = styled.div`
+  box-sizing: border-box;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
   width: 100%;
   gap: 3px;
+  padding: 4px;
+  flex-grow: 1;
 `;
 
+const ImgWrapper = styled.div`
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0;
+  img {
+    width: 100%;
+    height: 100px;
+    object-fit: contain;
+  }
+`;
 const Button = styled.button`
   background-color: #69422a;
   color: #f0e5e1;
@@ -57,6 +74,7 @@ const Button = styled.button`
   height: 30px;
   font-weight: bold;
   
+  flex-shrink: 0;
   margin-right: 0;
   font-size: 1.2rem;
   cursor: pointer;
@@ -73,6 +91,9 @@ const Button = styled.button`
 `;
 
 const MaxButton = styled.button`
+  position: absolute;
+  top: 0;
+  left: 0;
   background-color: transparent;
   color: #69422a;
   border: none;
@@ -90,6 +111,7 @@ const MaxButton = styled.button`
 `;
 
 const Input = styled.input`
+  box-sizing: border-box;
   width: auto;
   text-align: center;
   font-size: 1rem;
@@ -97,17 +119,19 @@ const Input = styled.input`
   border: 1px solid #ccc;
   padding: 5px;
   flex-grow: 1;
+  flex-shrink: 1;
+  max-width: calc(100% - 66px);
   appearance: none;
   -webkit-appearance: none;
   -moz-appearance: textfield;
 `;
 
 const InputCounter = forwardRef<InputCounterRef, InputCounterProps>(
-  ({ label, price, maxCount, handleChange }, ref) => {
+  ({ label, price, image, maxCount, handleChange }, ref) => {
     const [count, setCount] = useState(0);
 
     const increment = () => {
-      if (count < maxCount) {
+      if (!maxCount || count < maxCount) {
         const newValue = count + 1;
         setCount(newValue);
       }
@@ -120,11 +144,13 @@ const InputCounter = forwardRef<InputCounterRef, InputCounterProps>(
       }
     };
     const setToMax = () => {
-      setCount(maxCount);
+      if(maxCount) {
+        setCount(maxCount);
+      }
     };
 
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-      const value = Math.max(0, Math.min(maxCount, parseInt(e.target.value) || 0));
+      const value = parseInt(e.target.value);
       setCount(value);
     };
 
@@ -146,9 +172,20 @@ const InputCounter = forwardRef<InputCounterRef, InputCounterProps>(
           <Label>{label}</Label>
           <PriceText>Preço: {price}</PriceText>
         </Header>
-        <MaxButton onClick={setToMax} disabled={count === maxCount}>
-          MAX
-        </MaxButton>
+        <ImgWrapper>
+          {
+            maxCount && (
+              <MaxButton onClick={setToMax} disabled={count === maxCount}>
+                MAX
+              </MaxButton>
+            )
+          }
+          {
+            image && (
+              <img src={image} alt="" />
+            )
+          }
+        </ImgWrapper>
         <InputWrapper>
           <Button onClick={decrement} disabled={count === 0}>
             -
