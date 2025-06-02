@@ -206,7 +206,7 @@ function App() {
         />
         <InputCounter
           label="Analgésico"
-          price={350 * (withDiscount ? 0.8 : 1)}
+          price={200 * (withDiscount ? 0.8 : 1)}
           handleChange={(value: number) => handleCounterChange(4, value)}
           maxCount={10}
           ref={refs[4]}
