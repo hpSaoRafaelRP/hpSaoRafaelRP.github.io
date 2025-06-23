@@ -2,14 +2,16 @@ import { useReducer, useRef, useState } from 'react';
 import './App.css';
 import InputCounter, { InputCounterRef } from './components/InputCouter';
 import styled from 'styled-components';
-import adrenalina from "./assets/adrenalina.png";
-import atadura from "./assets/atadura.png";
-import medkit from "./assets/kitmed.png";
-import bandagem from "./assets/bandagem.png";
-import analgesico from "./assets/analgesico.png";
-import sinkalm from "./assets/sincalm.png";
-import ritmoneury from "./assets/ritmoneury.png";
+import adrenalina from "./assets/Adrenalina.png";
+import atadura from "./assets/Atadura.png";
+import medkit from "./assets/KitMed.png";
+import bandagem from "./assets/Bandagem.png";
+import analgesico from "./assets/Analgesico.png";
+import sinkalm from "./assets/Sinkalmy.png";
+import ritmoneury from "./assets/Ritmoneury.png";
 import logo from "./assets/logo.png";
+import ursinho from "./assets/Ursinho.png"; // Adicione a imagem se existir
+import tratamento from "./assets/Tratamento.png"; // Adicione a imagem se existir
 
 interface Action {
   type: 'SET_TOTAL' | 'RESET_TOTALS';
@@ -124,7 +126,7 @@ const ResetButton = styled.button`
 `;
 
 function App() {
-  const initialState: number[] = Array(7).fill(0);
+  const initialState: number[] = Array(18).fill(0);
 
   const totalsReducer = (state: number[], action: Action): number[] => {
     switch (action.type) {
@@ -144,20 +146,26 @@ function App() {
   };
 
   const [totals, dispatch] = useReducer(totalsReducer, initialState);
-  const [treatmentN, setTreatmentN] = useState(0);
-  const [treatmentS, setTreatmentS] = useState(0);
 
   // Criar referências estáticas para os InputCounters
   const refs = [
-    useRef<InputCounterRef>(null),
-    useRef<InputCounterRef>(null),
-    useRef<InputCounterRef>(null),
-    useRef<InputCounterRef>(null),
-    useRef<InputCounterRef>(null),
-    useRef<InputCounterRef>(null),
-    useRef<InputCounterRef>(null),
-    useRef<InputCounterRef>(null),
-    useRef<InputCounterRef>(null),
+    useRef<InputCounterRef>(null), // 0 Adrenalina
+    useRef<InputCounterRef>(null), // 1 Atadura
+    useRef<InputCounterRef>(null), // 2 KitMed
+    useRef<InputCounterRef>(null), // 3 Bandagem
+    useRef<InputCounterRef>(null), // 4 Analgésico
+    useRef<InputCounterRef>(null), // 5 Sincalmy
+    useRef<InputCounterRef>(null), // 6 Ritmoneury
+    useRef<InputCounterRef>(null), // 7 Tratamento Norte
+    useRef<InputCounterRef>(null), // 8 Tratamento Sul
+    useRef<InputCounterRef>(null), // 9 Deslocamento Norte
+    useRef<InputCounterRef>(null), // 10 Deslocamento Sul
+    useRef<InputCounterRef>(null), // 11 Tratamento
+    useRef<InputCounterRef>(null), // 12 Gesso
+    useRef<InputCounterRef>(null), // 13 Raio-X
+    useRef<InputCounterRef>(null), // 14 Ressonância
+    useRef<InputCounterRef>(null), // 15 Ursinho
+    useRef<InputCounterRef>(null), // 16 Consultas
   ];
 
   const handleCounterChange = (index: number, value: number) => {
@@ -172,7 +180,10 @@ function App() {
     dispatch({ type: 'RESET_TOTALS' });
   };
 
-  const calculateGrandTotal = () => totals.reduce((acc, curr) => acc + curr, 0) + treatmentN + treatmentS;
+  // Atualize calculateGrandTotal para somar todos os itens
+  const calculateGrandTotal = () =>
+    totals.reduce((acc, curr) => acc + curr, 0);
+
   const [withDiscount, setWithDiscount] = useState(false);
   return (
     <>
@@ -180,78 +191,137 @@ function App() {
         <img src={logo} alt="Hospital São Rafael" />
       </Header>
       <GridWrapper>
-      <InputCounter
+        {/* Itens com imagem */}
+        <InputCounter
           label="Atadura"
-          price={170 * (withDiscount ? 0.8 : 1)}
-          handleChange={(value: number) => handleCounterChange(1, value)}
+          price={withDiscount ? 200 : 250}
           maxCount={10}
-          ref={refs[1]}
+          handleChange={(value: number) => handleCounterChange(0, value)}
+          ref={refs[0]}
           image={atadura}
         />
         <InputCounter
           label="Bandagem"
-          price={250 * (withDiscount ? 0.8 : 1)}
-          handleChange={(value: number) => handleCounterChange(3, value)}
+          price={withDiscount ? 300 : 400}
           maxCount={5}
-          ref={refs[3]}
+          handleChange={(value: number) => handleCounterChange(1, value)}
+          ref={refs[1]}
           image={bandagem}
         />
         <InputCounter
-          label="Medkit"
-          price={1400 * (withDiscount ? 0.8 : 1)}
-          handleChange={(value: number) => handleCounterChange(2, value)}
+          label="KitMed"
+          price={withDiscount ? 1500 : 2000}
           maxCount={2}
+          handleChange={(value: number) => handleCounterChange(2, value)}
           ref={refs[2]}
           image={medkit}
         />
         <InputCounter
           label="Analgésico"
-          price={200 * (withDiscount ? 0.8 : 1)}
-          handleChange={(value: number) => handleCounterChange(4, value)}
+          price={withDiscount ? 350 : 500}
           maxCount={10}
-          ref={refs[4]}
+          handleChange={(value: number) => handleCounterChange(3, value)}
+          ref={refs[3]}
           image={analgesico}
         />
         <InputCounter
           label="Adrenalina"
-          price={7500 * (withDiscount ? 0.8 : 1)}
-          handleChange={(value: number) => handleCounterChange(0, value)}
+          price={withDiscount ? 9000 : 11000}
           maxCount={3}
-          ref={refs[0]}
+          handleChange={(value: number) => handleCounterChange(4, value)}
+          ref={refs[4]}
           image={adrenalina}
         />
         <InputCounter
-          label="Sinkalm"
-          price={450 * (withDiscount ? 0.8 : 1)}
-          handleChange={(value: number) => handleCounterChange(5, value)}
+          label="Sinkalmy"
+          price={withDiscount ? 500 : 700}
           maxCount={5}
+          handleChange={(value: number) => handleCounterChange(5, value)}
           ref={refs[5]}
           image={sinkalm}
         />
         <InputCounter
           label="Ritmoneury"
-          price={450 * (withDiscount ? 0.8 : 1)}
-          handleChange={(value: number) => handleCounterChange(6, value)}
+          price={withDiscount ? 500 : 700}
           maxCount={5}
+          handleChange={(value: number) => handleCounterChange(6, value)}
           ref={refs[6]}
           image={ritmoneury}
         />
+        {/* // tem imagem */}
+        <InputCounter
+          label="Ursinho"
+          price={withDiscount ? 5000 : 8000}
+          maxCount={5}
+          handleChange={(value: number) => handleCounterChange(7, value)}
+          ref={refs[7]}
+          image={ursinho}
+        />
+        {/* // tem imagem */}
+        <InputCounter
+          label="Tratamento"
+          price={withDiscount ? 1000 : 1500}
+          maxCount={5}
+          handleChange={(value: number) => handleCounterChange(8, value)}
+          ref={refs[8]}
+          image={tratamento}
+        />
 
+
+        {/* Itens sem imagem, após Tratamento Sul */}
         <CardContainer>
           <InputCounter
-            label="Tratamento Norte"
-            price={800}
-            handleChange={(value: number) => setTreatmentN(value)}
-            ref={refs[7]}
+            label="Desl. Norte"
+            price={withDiscount ? 500 : 1000}
+            handleChange={(value: number) => handleCounterChange(9, value)}
+            ref={refs[9]}
           />
           <InputCounter
-            label="Tratamento Sul"
-            price={1200}
-            handleChange={(value: number) => setTreatmentS(value)}
-            ref={refs[8]}
+            label="Desl. Sul"
+            price={withDiscount ? 1000 : 1500}
+            handleChange={(value: number) => handleCounterChange(10, value)}
+            ref={refs[10]}
+          />
+          <InputCounter
+            label="Ressonância"
+            price={withDiscount ? 2500 : 3500}
+            handleChange={(value: number) => handleCounterChange(11, value)}
+            ref={refs[11]}
           />
         </CardContainer>
         <CardContainer>
+          <InputCounter
+            label="Exame"
+            price={withDiscount ? 2000 : 2500}
+            handleChange={(value: number) => handleCounterChange(12, value)}
+            ref={refs[12]}
+          />
+          <InputCounter
+            label="Gesso"
+            price={withDiscount ? 2000 : 2500}
+            handleChange={(value: number) => handleCounterChange(13, value)}
+            ref={refs[13]}
+          />
+          <InputCounter
+            label="Raio-X"
+            price={withDiscount ? 2000 : 2500}
+            handleChange={(value: number) => handleCounterChange(14, value)}
+            ref={refs[14]}
+          />
+        </CardContainer>
+        <CardContainer>
+          <InputCounter
+            label="Consultas"
+            price={withDiscount ? 8000 : 10000}
+            handleChange={(value: number) => handleCounterChange(15, value)}
+            ref={refs[15]}
+          />
+          <InputCounter
+            label="Cirurgias"
+            price={withDiscount ? 150000 : 200000}
+            handleChange={(value: number) => handleCounterChange(16, value)}
+            ref={refs[16]}
+          />
           <label>
             <input
               type="checkbox"
